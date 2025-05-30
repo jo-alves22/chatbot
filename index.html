@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Gamer Builder Bot</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        
+        .chat-container {
+            width: 90%;
+            max-width: 800px;
+            height: 90vh;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            background-color: #1e1e1e;
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            background-color: #4a0072;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: #2d2d2d;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            border-radius: 10px;
+            max-width: 85%;
+            word-wrap: break-word;
+            white-space: pre-line;
+            line-height: 1.5;
+        }
+        
+        .user-message {
+            background-color: #4a0072;
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 2px;
+        }
+        
+        .bot-message {
+            background-color: #3d3d3d;
+            color: #e0e0e0;
+            margin-right: auto;
+            border-bottom-left-radius: 2px;
+            border-left: 3px solid #9c27b0;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background-color: #1e1e1e;
+            border-top: 1px solid #333;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #444;
+            border-radius: 20px;
+            outline: none;
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+            font-size: 1em;
+        }
+        
+        .chat-input button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            background-color: #9c27b0;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+        
+        .chat-input button:hover {
+            background-color: #7b1fa2;
+        }
+        
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background-color: #1e1e1e;
+            border-top: 1px solid #333;
+        }
+        
+        .suggestion-chip {
+            background-color: #3d3d3d;
+            color: #e0e0e0;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            border: 1px solid #555;
+        }
+        
+        .suggestion-chip:hover {
+            background-color: #4a0072;
+            border-color: #9c27b0;
+            transform: translateY(-2px);
+        }
+        
+        /* Estilização para destacar componentes de PC */
+        strong, b {
+            color: #bb86fc;
+        }
+        
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #4a0072;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7b1fa2;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            PC Gamer Builder Bot
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message bot-message">
+                Olá! Sou o PC Builder Bot, seu assistente para montar o PC gamer ideal. Como posso ajudar você hoje?
+            </div>
+        </div>
+        <div class="suggestions">
+            <div class="suggestion-chip" onclick="sendSuggestion('montar pc')">montar pc</div>
+            <div class="suggestion-chip" onclick="sendSuggestion('jogos pesados')">jogos pesados</div>
+            <div class="suggestion-chip" onclick="sendSuggestion('jogos leves')">jogos leves</div>
+            <div class="suggestion-chip" onclick="sendSuggestion('orçamento')">orçamento</div>
+            <div class="suggestion-chip" onclick="sendSuggestion('peças')">peças</div>
+            <div class="suggestion-chip" onclick="sendSuggestion('ajuda')">ajuda</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Digite sua mensagem..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        // Função para adicionar mensagem ao chat
+        function addMessage(message, isUser) {
+            const chatMessages = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            
+            // Substituir ** por <strong> para destacar texto
+            if (!isUser) {
+                message = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            }
+            
+            messageDiv.innerHTML = message;
+            chatMessages.appendChild(messageDiv);
+            
+            // Rolar para a mensagem mais recente
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Função para enviar mensagem ao servidor
+        async function sendMessage() {
+            const userInput = document.getElementById('user-input');
+            const message = userInput.value.trim();
+            
+            if (message === '') return;
+            
+            // Adicionar mensagem do usuário ao chat
+            addMessage(message, true);
+            
+            // Limpar campo de entrada
+            userInput.value = '';
+            
+            try {
+                // Enviar mensagem para o servidor
+                const response = await fetch('http://127.0.0.1:5000/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message }),
+                });
+                
+                const data = await response.json();
+                
+                // Adicionar resposta do bot ao chat
+                addMessage(data.response, false);
+                
+                // Atualizar sugestões com base na resposta
+                updateSuggestions(message, data.response);
+            } catch (error) {
+                console.error('Erro ao enviar mensagem:', error);
+                addMessage('Erro ao se comunicar com o servidor. Verifique se o servidor está rodando.', false);
+            }
+        }
+        
+        // Função para atualizar sugestões com base na resposta atual
+        function updateSuggestions(userMessage, botResponse) {
+            const suggestionsDiv = document.querySelector('.suggestions');
+            suggestionsDiv.innerHTML = ''; // Limpar sugestões atuais
+            
+            // Conjunto padrão de sugestões
+            let suggestions = ['montar pc', 'ajuda'];
+            
+            // Adicionar sugestões com base na resposta do bot
+            if (botResponse.includes('orçamento baixo') || 
+                botResponse.includes('orçamento médio') || 
+                botResponse.includes('orçamento alto')) {
+                suggestions = ['orçamento baixo', 'orçamento médio', 'orçamento alto'];
+            } 
+            else if (botResponse.includes('jogos pesados') && botResponse.includes('jogos leves')) {
+                suggestions = ['jogos pesados', 'jogos leves', 'ambos'];
+            }
+            else if (botResponse.includes('GTA V')) {
+                suggestions = ['gta', 'rdr2', 'lastofus', 'outros pesados'];
+            }
+            else if (botResponse.includes('Counter-Strike')) {
+                suggestions = ['cs', 'fortnite', 'valorant', 'outros leves'];
+            }
+            else if (botResponse.includes('detalhes') && botResponse.includes('finalizar')) {
+                suggestions = ['detalhes', 'finalizar', 'montar pc'];
+            }
+            else if (userMessage === 'detalhes') {
+                suggestions = ['finalizar', 'montar pc', 'peças'];
+            }
+            
+            // Criar chips de sugestão
+            suggestions.forEach(suggestion => {
+                const chip = document.createElement('div');
+                chip.className = 'suggestion-chip';
+                chip.textContent = suggestion;
+                chip.onclick = () => sendSuggestion(suggestion);
+                suggestionsDiv.appendChild(chip);
+            });
+        }
+        
+        // Função para enviar mensagem ao pressionar Enter
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        // Função para enviar sugestão
+        function sendSuggestion(suggestion) {
+            document.getElementById('user-input').value = suggestion;
+            sendMessage();
+        }
+    </script>
+</body>
+</html>
