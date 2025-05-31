@@ -13,9 +13,9 @@ pip install Flask flask-cors
 ## Arquivos do Projeto
 
 O projeto consiste em três arquivos principais:
-- `pc_gamer_chatbot_server.py`: Código do servidor backend que gerencia o fluxo de diálogo
+- `chatbot_server.py`: Código do servidor backend que gerencia o fluxo de diálogo
 - `qa_data.json`: Arquivo JSON contendo todas as perguntas, respostas e fluxo de escolha
-- `pc_gamer_index.html`: Interface web temática para interação com o chatbot
+- `index.html`: Interface web temática para interação com o chatbot
 
 ## Estrutura do Arquivo JSON
 
@@ -48,16 +48,16 @@ O chatbot foi projetado com um fluxo de diálogo estruturado:
 2. **Execute o script Python:** Digite o seguinte comando e pressione Enter:
 
    ```bash
-   python pc_gamer_chatbot_server.py
+   python chatbot_server.py
    ```
 
 3. **Servidor Ativo:** Você verá mensagens indicando que o servidor Flask foi iniciado e está rodando em `http://127.0.0.1:5000`. O servidor agora está pronto para receber requisições.
 
 ## Acessando a Interface Web
 
-1. **Abra o arquivo HTML:** Após iniciar o servidor, abra o arquivo `pc_gamer_index.html` em seu navegador web. Você pode fazer isso de duas maneiras:
-   - Clique duas vezes no arquivo `pc_gamer_index.html` para abri-lo diretamente no navegador
-   - Ou digite o caminho completo do arquivo na barra de endereços do navegador (ex: `file:///caminho/para/seu/pc_gamer_index.html`)
+1. **Abra o arquivo HTML:** Após iniciar o servidor, abra o arquivo `index.html` em seu navegador web. Você pode fazer isso de duas maneiras:
+   - Clique duas vezes no arquivo `index.html` para abri-lo diretamente no navegador
+   - Ou digite o caminho completo do arquivo na barra de endereços do navegador (ex: `file:///caminho/para/seu/index.html`)
 
 2. **Interagindo com o Chatbot:** A interface web apresenta:
    - Uma caixa de mensagens onde as conversas serão exibidas
@@ -69,7 +69,7 @@ O chatbot foi projetado com um fluxo de diálogo estruturado:
 
 ### Modificando o Fluxo de Diálogo
 
-Para personalizar o fluxo de diálogo, edite o arquivo `pc_gamer_qa_data.json`. Você pode:
+Para personalizar o fluxo de diálogo, edite o arquivo `qa_data.json`. Você pode:
 
 1. **Adicionar novos comandos e respostas**:
    ```json
@@ -112,9 +112,9 @@ A interface web atualiza automaticamente as sugestões com base no contexto da c
 
 ## Solução de Problemas
 
-1. **Erro "Address already in use":** Se o servidor não iniciar devido a um erro indicando que a porta já está em uso, verifique se não há outra instância do servidor rodando. Você pode encerrar processos Python existentes ou alterar a porta no arquivo `pc_gamer_chatbot_server.py`.
+1. **Erro "Address already in use":** Se o servidor não iniciar devido a um erro indicando que a porta já está em uso, verifique se não há outra instância do servidor rodando. Você pode encerrar processos Python existentes ou alterar a porta no arquivo `chatbot_server.py`.
 
-2. **Erro de CORS:** Se o navegador mostrar erros relacionados a CORS no console, verifique se você está usando o arquivo `pc_gamer_chatbot_server.py` que inclui suporte a CORS.
+2. **Erro de CORS:** Se o navegador mostrar erros relacionados a CORS no console, verifique se você está usando o arquivo `chatbot_server.py` que inclui suporte a CORS.
 
 3. **Formatação incorreta:** Se a formatação (como destaque de texto ou quebras de linha) não estiver funcionando corretamente, verifique se o JSON está corretamente formatado e se o HTML está processando as tags de formatação.
 
