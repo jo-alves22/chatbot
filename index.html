@@ -16,7 +16,7 @@
             background-color: #121212;
             color: #e0e0e0;
         }
-        
+
         .chat-container {
             width: 90%;
             max-width: 800px;
@@ -28,23 +28,46 @@
             background-color: #1e1e1e;
             overflow: hidden;
         }
-        
+
         .chat-header {
             background-color: #4a0072;
             color: white;
-            padding: 15px;
-            text-align: center;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header-title {
             font-weight: bold;
             font-size: 1.2em;
         }
-        
+
+        /* Solid background so contrast is unambiguous (#6a1b9a on white = 9.4:1) */
+        .btn-nova-conversa {
+            background: #6a1b9a;
+            color: #ffffff;
+            border: 1px solid #9c27b0;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.85em;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-nova-conversa:hover {
+            background: #7b1fa2;
+        }
+
         .chat-messages {
             flex: 1;
             padding: 15px;
             overflow-y: auto;
             background-color: #2d2d2d;
         }
-        
+
         .message {
             margin-bottom: 15px;
             padding: 12px 15px;
@@ -54,14 +77,14 @@
             white-space: pre-line;
             line-height: 1.5;
         }
-        
+
         .user-message {
             background-color: #4a0072;
             color: white;
             margin-left: auto;
             border-bottom-right-radius: 2px;
         }
-        
+
         .bot-message {
             background-color: #3d3d3d;
             color: #e0e0e0;
@@ -69,14 +92,72 @@
             border-bottom-left-radius: 2px;
             border-left: 3px solid #9c27b0;
         }
-        
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 14px 16px;
+            background-color: #3d3d3d;
+            border-radius: 10px;
+            border-bottom-left-radius: 2px;
+            border-left: 3px solid #9c27b0;
+            max-width: 70px;
+            margin-bottom: 15px;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background-color: #9c27b0;
+            border-radius: 50%;
+            display: inline-block;
+            animation: bounce 1.2s infinite ease-in-out;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-6px); }
+        }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background-color: #1e1e1e;
+            border-top: 1px solid #333;
+        }
+
+        /* Using <button> for accessibility; reset defaults then apply chip style */
+        .suggestion-chip {
+            background-color: #3d3d3d;
+            color: #e0e0e0;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-family: inherit;
+            transition: all 0.2s;
+            border: 1px solid #555;
+        }
+
+        .suggestion-chip:hover {
+            background-color: #4a0072;
+            border-color: #9c27b0;
+            transform: translateY(-2px);
+        }
+
         .chat-input {
             display: flex;
             padding: 15px;
             background-color: #1e1e1e;
             border-top: 1px solid #333;
         }
-        
+
         .chat-input input {
             flex: 1;
             padding: 12px 15px;
@@ -87,7 +168,12 @@
             color: #e0e0e0;
             font-size: 1em;
         }
-        
+
+        .chat-input input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         .chat-input button {
             margin-left: 10px;
             padding: 10px 20px;
@@ -96,194 +182,253 @@
             border: none;
             border-radius: 20px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.2s;
             font-weight: bold;
+            font-family: inherit;
         }
-        
-        .chat-input button:hover {
+
+        .chat-input button:hover:not(:disabled) {
             background-color: #7b1fa2;
         }
-        
-        .suggestions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding: 15px;
-            background-color: #1e1e1e;
-            border-top: 1px solid #333;
+
+        .chat-input button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
-        
-        .suggestion-chip {
-            background-color: #3d3d3d;
-            color: #e0e0e0;
-            padding: 8px 15px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 0.9em;
-            transition: all 0.3s;
-            border: 1px solid #555;
-        }
-        
-        .suggestion-chip:hover {
-            background-color: #4a0072;
-            border-color: #9c27b0;
-            transform: translateY(-2px);
-        }
-        
-        /* Estilização para destacar componentes de PC */
+
         strong, b {
             color: #bb86fc;
         }
-        
-        /* Scrollbar personalizada */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #1e1e1e;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #4a0072;
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #7b1fa2;
-        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1e1e1e; }
+        ::-webkit-scrollbar-thumb { background: #4a0072; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #7b1fa2; }
     </style>
 </head>
 <body>
     <div class="chat-container">
         <div class="chat-header">
-            PC Gamer Builder Bot
+            <span class="chat-header-title">🎮 PC Gamer Builder Bot</span>
+            <button class="btn-nova-conversa" onclick="novaConversa()">Nova Conversa</button>
         </div>
         <div class="chat-messages" id="chat-messages">
             <div class="message bot-message">
-                Olá! Sou o PC Builder Bot, seu assistente para montar o PC gamer ideal. Como posso ajudar você hoje?
+                Olá! Sou o PC Builder Bot, seu assistente para montar o PC gamer ideal. Pode me perguntar qualquer coisa sobre hardware ou dizer <strong>montar pc</strong> para começar!
             </div>
         </div>
-        <div class="suggestions">
-            <div class="suggestion-chip" onclick="sendSuggestion('montar pc')">montar pc</div>
-            <div class="suggestion-chip" onclick="sendSuggestion('jogos pesados')">jogos pesados</div>
-            <div class="suggestion-chip" onclick="sendSuggestion('jogos leves')">jogos leves</div>
-            <div class="suggestion-chip" onclick="sendSuggestion('orçamento')">orçamento</div>
-            <div class="suggestion-chip" onclick="sendSuggestion('peças')">peças</div>
-            <div class="suggestion-chip" onclick="sendSuggestion('ajuda')">ajuda</div>
+        <div class="suggestions" id="suggestions">
+            <button class="suggestion-chip" onclick="sendSuggestion('montar pc')">montar pc</button>
+            <button class="suggestion-chip" onclick="sendSuggestion('jogos pesados')">jogos pesados</button>
+            <button class="suggestion-chip" onclick="sendSuggestion('jogos leves')">jogos leves</button>
+            <button class="suggestion-chip" onclick="sendSuggestion('orçamento')">orçamento</button>
+            <button class="suggestion-chip" onclick="sendSuggestion('peças')">peças</button>
+            <button class="suggestion-chip" onclick="sendSuggestion('ajuda')">ajuda</button>
         </div>
         <div class="chat-input">
             <input type="text" id="user-input" placeholder="Digite sua mensagem..." onkeypress="handleKeyPress(event)">
-            <button onclick="sendMessage()">Enviar</button>
+            <button id="send-btn" onclick="sendMessage()">Enviar</button>
         </div>
     </div>
 
     <script>
-        // Função para adicionar mensagem ao chat
-        function addMessage(message, isUser) {
-            const chatMessages = document.getElementById('chat-messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-            
-            // Substituir ** por <strong> para destacar texto
-            if (!isUser) {
-                message = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        const SERVER = 'http://127.0.0.1:5000';
+
+        const DEFAULT_CHIPS = ['montar pc', 'jogos pesados', 'jogos leves', 'orçamento', 'peças', 'ajuda'];
+
+        function getSessionId() {
+            let id = localStorage.getItem('pcbot_session_id');
+            if (!id) {
+                id = crypto.randomUUID();
+                localStorage.setItem('pcbot_session_id', id);
             }
-            
-            messageDiv.innerHTML = message;
-            chatMessages.appendChild(messageDiv);
-            
-            // Rolar para a mensagem mais recente
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return id;
         }
-        
-        // Função para enviar mensagem ao servidor
+
+        function setInputDisabled(disabled) {
+            document.getElementById('user-input').disabled = disabled;
+            document.getElementById('send-btn').disabled = disabled;
+        }
+
+        function scrollToBottom() {
+            const container = document.getElementById('chat-messages');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function renderMarkdown(text) {
+            return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        }
+
+        function addUserMessage(text) {
+            const div = document.createElement('div');
+            div.className = 'message user-message';
+            div.textContent = text;
+            document.getElementById('chat-messages').appendChild(div);
+            scrollToBottom();
+        }
+
+        function showTypingIndicator() {
+            const el = document.createElement('div');
+            el.className = 'typing-indicator';
+            el.id = 'typing-indicator';
+            el.innerHTML = '<span></span><span></span><span></span>';
+            document.getElementById('chat-messages').appendChild(el);
+            scrollToBottom();
+        }
+
+        function removeTypingIndicator() {
+            const el = document.getElementById('typing-indicator');
+            if (el) el.remove();
+        }
+
+        function createBotMessage() {
+            const div = document.createElement('div');
+            div.className = 'message bot-message';
+            document.getElementById('chat-messages').appendChild(div);
+            return div;
+        }
+
+        function updateBotMessage(div, text) {
+            div.innerHTML = renderMarkdown(text);
+            scrollToBottom();
+        }
+
+        function renderChips(chips) {
+            return chips
+                .map(c => `<button class="suggestion-chip" onclick="sendSuggestion('${c}')">${c}</button>`)
+                .join('');
+        }
+
+        function updateSuggestions(botText) {
+            let chips;
+            if (/orçamento baixo|orçamento médio|orçamento alto/i.test(botText)) {
+                chips = ['orçamento baixo', 'orçamento médio', 'orçamento alto'];
+            } else if (/jogos pesados.*jogos leves|jogos leves.*jogos pesados/i.test(botText)) {
+                chips = ['jogos pesados', 'jogos leves', 'ambos'];
+            } else if (/gta|red dead|last of us/i.test(botText)) {
+                chips = ['gta', 'rdr2', 'lastofus', 'outros pesados'];
+            } else if (/counter-strike|fortnite|valorant/i.test(botText)) {
+                chips = ['cs', 'fortnite', 'valorant', 'outros leves'];
+            } else if (/detalhes.*finalizar|finalizar.*detalhes/i.test(botText)) {
+                chips = ['detalhes', 'finalizar', 'montar pc'];
+            } else {
+                chips = ['montar pc', 'orçamento', 'peças', 'ajuda'];
+            }
+            document.getElementById('suggestions').innerHTML = renderChips(chips);
+        }
+
+        function parseSseLine(line) {
+            if (!line.startsWith('data: ')) return null;
+            const raw = line.slice(6).trim();
+            if (!raw) return null;
+            try { return JSON.parse(raw); } catch { return null; }
+        }
+
+        // Returns true if the caller should stop reading (error event received).
+        function processLines(lines, callbacks) {
+            for (const line of lines) {
+                const parsed = parseSseLine(line);
+                if (!parsed) continue;
+                if (parsed.error) { callbacks.onError(parsed.error); return true; }
+                if (parsed.text) callbacks.onText(parsed.text);
+                if (parsed.done) callbacks.onDone();
+            }
+            return false;
+        }
+
+        async function consumeStream(reader, callbacks) {
+            const decoder = new TextDecoder();
+            let buffer = '';
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop();
+
+                if (processLines(lines, callbacks)) return;
+            }
+        }
+
         async function sendMessage() {
-            const userInput = document.getElementById('user-input');
-            const message = userInput.value.trim();
-            
-            if (message === '') return;
-            
-            // Adicionar mensagem do usuário ao chat
-            addMessage(message, true);
-            
-            // Limpar campo de entrada
-            userInput.value = '';
-            
+            const input = document.getElementById('user-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            input.value = '';
+            addUserMessage(message);
+            setInputDisabled(true);
+            showTypingIndicator();
+
+            let botDiv = null;
+            let fullText = '';
+
+            function ensureBotDiv() {
+                if (!botDiv) {
+                    removeTypingIndicator();
+                    botDiv = createBotMessage();
+                }
+                return botDiv;
+            }
+
             try {
-                // Enviar mensagem para o servidor
-                const response = await fetch('http://127.0.0.1:5000/chat', {
+                const response = await fetch(`${SERVER}/chat`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ message: message }),
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message, session_id: getSessionId() }),
                 });
-                
-                const data = await response.json();
-                
-                // Adicionar resposta do bot ao chat
-                addMessage(data.response, false);
-                
-                // Atualizar sugestões com base na resposta
-                updateSuggestions(message, data.response);
-            } catch (error) {
-                console.error('Erro ao enviar mensagem:', error);
-                addMessage('Erro ao se comunicar com o servidor. Verifique se o servidor está rodando.', false);
+
+                if (!response.ok) {
+                    const err = await response.json().catch(() => ({}));
+                    removeTypingIndicator();
+                    updateBotMessage(createBotMessage(), err.error || 'Erro ao conectar ao servidor.');
+                } else {
+                    await consumeStream(response.body.getReader(), {
+                        onText(text) { fullText += text; updateBotMessage(ensureBotDiv(), fullText); },
+                        onDone() { updateSuggestions(fullText); },
+                        onError(msg) { removeTypingIndicator(); updateBotMessage(createBotMessage(), msg); },
+                    });
+                }
+            } catch (err) {
+                console.error('Fetch error:', err);
+                removeTypingIndicator();
+                updateBotMessage(createBotMessage(), 'Erro ao se comunicar com o servidor. Verifique se o servidor está rodando.');
             }
+
+            setInputDisabled(false);
+            document.getElementById('user-input').focus();
         }
-        
-        // Função para atualizar sugestões com base na resposta atual
-        function updateSuggestions(userMessage, botResponse) {
-            const suggestionsDiv = document.querySelector('.suggestions');
-            suggestionsDiv.innerHTML = ''; // Limpar sugestões atuais
-            
-            // Conjunto padrão de sugestões
-            let suggestions = ['montar pc', 'ajuda'];
-            
-            // Adicionar sugestões com base na resposta do bot
-            if (botResponse.includes('orçamento baixo') || 
-                botResponse.includes('orçamento médio') || 
-                botResponse.includes('orçamento alto')) {
-                suggestions = ['orçamento baixo', 'orçamento médio', 'orçamento alto'];
-            } 
-            else if (botResponse.includes('jogos pesados') && botResponse.includes('jogos leves')) {
-                suggestions = ['jogos pesados', 'jogos leves', 'ambos'];
+
+        async function novaConversa() {
+            try {
+                await fetch(`${SERVER}/reset`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_id: getSessionId() }),
+                });
+            } catch (err) {
+                console.debug('Reset request skipped (server offline):', err);
             }
-            else if (botResponse.includes('GTA V')) {
-                suggestions = ['gta', 'rdr2', 'lastofus', 'outros pesados'];
-            }
-            else if (botResponse.includes('Counter-Strike')) {
-                suggestions = ['cs', 'fortnite', 'valorant', 'outros leves'];
-            }
-            else if (botResponse.includes('detalhes') && botResponse.includes('finalizar')) {
-                suggestions = ['detalhes', 'finalizar', 'montar pc'];
-            }
-            else if (userMessage === 'detalhes') {
-                suggestions = ['finalizar', 'montar pc', 'peças'];
-            }
-            
-            // Criar chips de sugestão
-            suggestions.forEach(suggestion => {
-                const chip = document.createElement('div');
-                chip.className = 'suggestion-chip';
-                chip.textContent = suggestion;
-                chip.onclick = () => sendSuggestion(suggestion);
-                suggestionsDiv.appendChild(chip);
-            });
+
+            document.getElementById('chat-messages').innerHTML = `
+                <div class="message bot-message">
+                    Olá! Sou o PC Builder Bot, seu assistente para montar o PC gamer ideal. Pode me perguntar qualquer coisa sobre hardware ou dizer <strong>montar pc</strong> para começar!
+                </div>`;
+
+            document.getElementById('suggestions').innerHTML = renderChips(DEFAULT_CHIPS);
+            setInputDisabled(false);
+            document.getElementById('user-input').focus();
         }
-        
-        // Função para enviar mensagem ao pressionar Enter
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        }
-        
-        // Função para enviar sugestão
-        function sendSuggestion(suggestion) {
-            document.getElementById('user-input').value = suggestion;
+
+        function sendSuggestion(text) {
+            document.getElementById('user-input').value = text;
             sendMessage();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') sendMessage();
         }
     </script>
 </body>
